@@ -1,0 +1,100 @@
+var groupId = 10744969;
+var cookie = "_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_7E90FE65A0334D803D3C165D1B6857DD211F2B663A09BF9D80088F0549B42CE2C55F290A9084CCAE88A7E19BA5BC3FCC52F4E61C246FB9F47937DF80C8C09AD49F52ADE0A0FB7CD7CF98E42B7B3B926405F2C713B2EBA09BC5060BEED1F10AF9CD48B21C15725CC1B7BE86EC1B8613A72B193CE4C8DC5AD066F563E12E59A3894D9970308DABB070F1FD7E08A17079F363CB2D56CC091F0B4E2C99A068551BFAE1C08A8A37FFFAD3A0AB7D6B61899025F9667EF7C391827BE25E3EB380174A0B65DA198B6D13158E292EF33F0DEE0BD2A77C897724E04AB66755E3F27366C59EAD3319A67C7BE02DB3117385DF5E988801857870EE7AF9FCCF35DF0C2D8FA522FFE805C8ECB53E9768693C2E993075A700E3AEE07273C656B3D4545572D64B7F8B876AF2FF60F62AD314B690AE8E90B9E346EA624FF619C36A4455BAFF105AD594057E00BE5F496B5282F4E377447CD322D927FAC8F14E9BE4FDB17F3472330522D23A98";
+
+const Discord = require("discord.js");
+const bot = new Discord.Client();
+const express = require("express");
+const rbx = require("noblox.js");
+const app = express();
+
+app.use(express.static("public"));
+
+async function startApp() {
+  await rbx.setCookie(cookie);
+  let currentUser = await rbx.getCurrentUser();
+  console.log(currentUser.UserName);
+}
+startApp();
+
+app.get("/ranker", (req, res) => {
+  var User = req.param("userid");
+  var Rank = req.param("rank");
+
+  rbx.setRank(groupId, parseInt(User), parseInt(Rank));
+  res.json("Ranked!");
+});
+
+app.get("/shift", (req, res) => {
+  var hoster = req.param("username");
+  const sentChannel = bot.channels.cache.get("943072698291060827");
+  let embeddd = new Discord.MessageEmbed()
+    .setTitle("**SHIFT**")
+    .setDescription(
+      "**Host: " +
+        hoster +
+        "**\n**Link: [Avorí Restaurant](https://www.roblox.com/games/6852568619/Avor-Restaurant)**\n\n**DESCRIPTION**\nA restaurant shift will be starting soon! Join us at the restaurant to feed our hungry customers and for a possible promotion!"
+    )
+    .setFooter(
+      "© Avorí | Created by jvronn",
+      "https://media.discordapp.net/attachments/845613522888818748/847852453110087780/New_Project_1_1_3.png?width=613&height=613"
+    )
+    .setColor("#ccff73");
+  sentChannel.send("@here", embeddd);
+  rbx.shout(
+    groupId,
+    `[SHIFT] A shift will be hosted by ${hoster} at the restaurant. Why not taste our fresh lemonade this summer? Staff may join for a possible promotion!`
+  );
+});
+
+app.get("/training", (req, res) => {
+  var hoster = req.param("username");
+  const sentChannel = bot.channels.cache.get("947311056865341470");
+  let embedddd = new Discord.MessageEmbed()
+    .setTitle("**TRAINING**")
+    .setDescription(
+      "**Host: " +
+        hoster +
+        "**\n**Link: [Training Center](https://www.roblox.com/games/6852572132/Avor-Trainings)**\n\n**DESCRIPTION**\nA training session will be starting soon! Join us at the training center to learn new things and for a possible promotion!"
+    )
+    .setFooter(
+      "© Avorí | Created by jvronn",
+      "https://media.discordapp.net/attachments/845613522888818748/847852453110087780/New_Project_1_1_3.png?width=613&height=613"
+    )
+    .setColor("#ccff73");
+  sentChannel.send("@here", embedddd);
+  rbx.shout(
+    groupId,
+    `[TRAINING] A staff training will be hosted by ${hoster} at the training center! Join us to officially start working at the restaurant and for a possible promotion!`
+  );
+});
+
+app.get("/slocktraining", (req, res) => {
+  var hoster = req.param("username");
+  rbx.shout(
+    groupId,
+    `[TRAINING] The staff training hosted by ${hoster} has been locked, sorry if you couldn't make it! [RESTAURANT] Head down to the restaurant for a refreshing lemonade this summer!`
+  );
+});
+
+app.get("/concludeshift", (req, res) => {
+  var hoster = req.param("username");
+  rbx.shout(
+    groupId,
+    `[SHIFT] The shift hosted by ${hoster} has concluded! [JOB OPPORTUNITY] Apply for a job at Avorí at our Job Center! https://www.roblox.com/games/6823734657/Avor-Applications`
+  );
+});
+
+app.get("/concludetraining", (req, res) => {
+  var hoster = req.param("username");
+  rbx.shout(
+    groupId,
+    `[TRAINING] The staff training hosted by ${hoster} has concluded! [JOB OPPORTUNITY] Apply for a job at Avorí at our Job Center! https://www.roblox.com/games/6823734657/Avor-Applications`
+  );
+});
+
+const listener = app.listen(process.env.PORT, () => {
+  console.log("Your app is listening on port " + listener.address().port);
+});
+
+bot.login("OTQ3NDUzMjUwMzE4MjM3NzE2.YhtemQ.BeqbQThRSBNUT1EV9BOQ-LTCruI");
+
